@@ -65,6 +65,7 @@ async def download_and_send_media(bot, chat_id, url, media_type, quality=None, a
         'quiet': True,
         'progress_hooks': [progress_hook] if progress_hook else [],
         'noplaylist': True,
+        'proxy': 'https://141.11.123.189:63650'
     }
 
     # 👇 Подключение cookies если файл существует
