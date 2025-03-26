@@ -12,13 +12,13 @@ from telethon_client import client as telethon_client
 from telethon.tl.types import InputPeerUser
 from telethon.tl.functions.users import GetFullUserRequest
 
-
 from dotenv import load_dotenv
 load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_ID = os.getenv("ADMIN_ID")
 LOG_FILE = "log.json"
+COOKIES_PATH = "cookies/www.youtube.com_cookies.txt"  # <-- путь к cookies-файлу
 
 def generate_url_id(url: str):
     return hashlib.md5(url.encode()).hexdigest()
@@ -66,6 +66,10 @@ async def download_and_send_media(bot, chat_id, url, media_type, quality=None, a
         'progress_hooks': [progress_hook] if progress_hook else [],
         'noplaylist': True,
     }
+
+    # 👇 Подключение cookies если файл существует
+    if os.path.exists(COOKIES_PATH):
+        ydl_opts['cookiefile'] = COOKIES_PATH
 
     try:
         start_time = time.time()

@@ -10,7 +10,7 @@ router = Router()
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
-    await message.reply("Hi! I’m your video downloader. Send me a TikTok, YouTube, Instagram or other link and choose a format.")
+    await message.reply("Привет! Я твой загрузчик видео. Отправь мне ссылку на TikTok, YouTube, Instagram или другой сайт и выбери формат загрузки.")
 
 @router.message(lambda msg: msg.text and any(x in msg.text for x in ["tiktok.com", "youtube.com", "youtu.be", "instagram.com", "facebook.com", "vk.com"]))
 async def video_request(message: Message):
@@ -46,5 +46,5 @@ async def video_request(message: Message):
     storage.save_url_storage(storage.url_storage)
 
     # Отправляем inline кнопки
-    await message.answer("Choose download format:", reply_markup=inline_kb.format_btn(url_id))
+    await message.answer("Выберите формат загрузки", reply_markup=inline_kb.format_btn(url_id))
 
