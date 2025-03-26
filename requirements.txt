@@ -6,3 +6,4 @@ yt_dlp
 aiofiles
 aiogram==3.2.0
 requests
+telethon
