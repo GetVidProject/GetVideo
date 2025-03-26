@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>📊 Download Logs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-900 p-8">
+<div class="max-w-6xl mx-auto bg-white shadow-lg rounded-xl p-6">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">📊 Download Logs</h2>
+        <a href="/admin/download" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">⬇️ Download log.json</a>
+    </div>
+
+    <canvas id="chart" class="mb-8"></canvas>
+
+    <table class="w-full table-auto border text-sm">
+        <thead>
+            <tr class="bg-gray-200 text-left">
+                <th class="p-2">User ID</th>
+                <th class="p-2">URL</th>
+                <th class="p-2">Type</th>
+                <th class="p-2">Quality</th>
+                <th class="p-2">Format</th>
+                <th class="p-2">Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in logs %}
+            <tr class="border-t">
+                <td class="p-2">{{ entry.user_id }}</td>
+                <td class="p-2 truncate max-w-xs">{{ entry.url }}</td>
+                <td class="p-2">{{ entry.type }}</td>
+                <td class="p-2">{{ entry.quality or '-' }}</td>
+                <td class="p-2">{{ entry.audio_format or '-' }}</td>
+                <td class="p-2">{{ entry.timestamp }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const stats = {{ stats | tojson }};
+    const ctx = document.getElementById('chart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: stats.labels,
+            datasets: [
+                {
+                    label: 'Video Downloads',
+                    data: stats.video,
+                    backgroundColor: '#3b82f6'
+                },
+                {
+                    label: 'Audio Downloads',
+                    data: stats.audio,
+                    backgroundColor: '#10b981'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: { display: true, text: 'Downloads by Day' }
+            }
+        }
+    });
+</script>
+</body>
+</html>
